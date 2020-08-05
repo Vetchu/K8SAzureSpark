@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spark-jobserver
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      jobserver: web
+  template:
+    metadata:
+      labels:
+        jobserver: web
+    spec:
+      containers:
+      - name: spark-jobserver
+        image: sparkjobserver/spark-jobserver:0.7.0.mesos-0.25.0.spark-1.6.2 
+        env:
+        - name: SPARK_MASTER
+          value: ${SPARK_MASTER}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: jobserver-entrypoint
+  namespace: default
+spec:
+  type: NodePort
+  selector:
+    jobserver: web
+  ports:
+  - port: 8090
+    targetPort: 8090
+    nodePort: 30001
