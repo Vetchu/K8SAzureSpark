@@ -16,7 +16,7 @@ resource "azurerm_kubernetes_cluster" "polygraph" {
 
   default_node_pool {
     name       = "default"
-    node_count = 2 
+    node_count = 2
     vm_size    = "Standard_D2_v2"
   }
 
